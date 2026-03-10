@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Viatica — Formulario de Consulta</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --v:#93cebf;--vd:#15443f;--vm:#4d9b8c;--vl:#c8e8e1;
+  --crema:#f9f4ea;--crema2:#f0e9d8;--crema3:#e6ddc8;
+  --ama:#ffdc88;--ama-l:#fff5d0;
+  --azul:#bdd4dc;--azul-l:#e6f1f5;
+  --sal:#fc8b79;--sal-l:#fde8e4;
+  --blanco:#ffffff;--txt:#15443f;--txt2:#3a6b63;--gris:#7a9992;--borde:#dde8e5;
+}
+html{scroll-behavior:smooth}
+body{background:var(--crema);font-family:'DM Sans',sans-serif;color:var(--txt);min-height:100vh;overflow-x:hidden;}
+.bg-c{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 95% 5%,rgba(147,206,191,.18) 0%,transparent 60%),radial-gradient(ellipse 55% 45% at 5% 95%,rgba(255,220,136,.16) 0%,transparent 55%),radial-gradient(ellipse 40% 40% at 50% 50%,rgba(189,212,220,.10) 0%,transparent 60%);}
+.bg-d{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle,rgba(21,68,63,.055) 1px,transparent 1px);background-size:26px 26px;}
+.wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:44px 20px 72px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:36px;animation:fadeUp .55s ease both;}
+.logo-m{display:inline-flex;align-items:center;gap:11px;margin-bottom:22px;}
+.logo-svg{width:46px;height:46px;flex-shrink:0;}
+.lword{font-family:'DM Sans',sans-serif;font-size:30px;font-weight:800;color:var(--vd);letter-spacing:-1px;line-height:1;}
+.lsub{font-size:9px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:var(--vm);display:block;margin-top:2px;}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--vm);margin-bottom:10px;}
+h1{font-family:'Noto Serif Display',serif;font-size:clamp(26px,5.5vw,40px);font-weight:700;color:var(--vd);line-height:1.1;margin-bottom:8px;}
+h1 em{font-style:italic;color:var(--vm);}
+.lead{font-size:14.5px;color:var(--txt2);line-height:1.72;max-width:520px;margin:0 auto 18px;}
+.rule{width:70px;height:3px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--v),transparent);border-radius:2px;}
+
+/* PROGRESS */
+.prog-wrap{margin-bottom:26px;animation:fadeUp .5s .1s ease both;}
+.prog-lbs{display:flex;justify-content:space-between;margin-bottom:6px;}
+.pl{font-size:10px;font-weight:600;color:var(--gris);letter-spacing:.5px;}
+.pl.a{color:var(--vd);}
+.prog-track{height:4px;background:var(--crema3);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--vd),var(--v));border-radius:2px;transition:width .4s ease;width:0%;}
+
+/* CARD */
+.card{background:var(--blanco);border-radius:22px;overflow:hidden;box-shadow:0 20px 70px rgba(21,68,63,.09),0 4px 18px rgba(21,68,63,.05);animation:fadeUp .55s .15s ease both;}
+
+/* SECTION */
+.sec{padding:28px 34px;border-bottom:1.5px solid var(--crema2);}
+.sec:last-child{border-bottom:none;}
+.sh{display:flex;align-items:center;gap:11px;margin-bottom:20px;}
+.sb{width:32px;height:32px;border-radius:50%;background:var(--vd);color:white;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb.y{background:var(--ama);color:var(--vd);}
+.sb.b{background:linear-gradient(135deg,#1a6eb5,#3a9bd5);}
+.st{font-family:'Noto Serif Display',serif;font-size:15.5px;font-weight:700;color:var(--vd);flex:1;line-height:1.2;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g1{display:grid;grid-template-columns:1fr;gap:12px;}
+.s2{grid-column:span 2;}
+
+/* FIELD */
+.f{display:flex;flex-direction:column;gap:5px;}
+.f label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--vm);}
+.f input,.f select,.f textarea{font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--txt);background:var(--crema);border:1.5px solid var(--borde);border-radius:11px;padding:10px 14px;outline:none;appearance:none;-webkit-appearance:none;transition:border-color .17s,box-shadow .17s,background .17s;}
+.f input::placeholder,.f textarea::placeholder{color:var(--gris);font-weight:400;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--v);background:white;box-shadow:0 0 0 3px rgba(147,206,191,.18);}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%2315443f' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer;}
+.f textarea{resize:vertical;min-height:90px;line-height:1.65;}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:100px;border:1.5px solid var(--borde);background:var(--crema);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;color:var(--txt2);cursor:pointer;user-select:none;transition:all .15s;}
+.chip:hover{border-color:var(--v);background:rgba(147,206,191,.10);color:var(--vd);}
+.chip.on{border-color:var(--vd);background:var(--vd);color:white;}
+.chip.on:hover{background:var(--vm);border-color:var(--vm);}
+.chip.y{border-color:var(--crema3);}
+.chip.y:hover{border-color:var(--ama);background:var(--ama-l);}
+.chip.y.on{border-color:var(--ama);background:rgba(255,220,136,.28);color:var(--vd);}
+.chip.az{border-color:var(--crema3);}
+.chip.az:hover{border-color:var(--azul);background:var(--azul-l);}
+.chip.az.on{border-color:var(--azul);background:var(--azul-l);color:#1a4d6a;}
+
+/* CARD SELECTOR */
+.sg{display:grid;gap:10px;}
+.sg.c2{grid-template-columns:1fr 1fr;}
+.sg.c3{grid-template-columns:1fr 1fr 1fr;}
+.sc{padding:14px 14px 13px;border-radius:14px;border:1.5px solid var(--borde);background:var(--crema);cursor:pointer;user-select:none;transition:all .17s;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;}
+.sc:hover{border-color:var(--v);background:rgba(147,206,191,.07);}
+.sc.on{border-color:var(--vd);background:rgba(21,68,63,.05);}
+.si{font-size:22px;line-height:1;}
+.sl{font-size:11.5px;font-weight:600;color:var(--txt2);line-height:1.25;}
+.sc.on .sl{color:var(--vd);font-weight:700;}
+
+/* PAX */
+.pax-r{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;}
+.pax-b{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:13px;background:var(--crema);border:1.5px solid var(--borde);}
+.pn{font-size:12.5px;font-weight:700;color:var(--txt);}
+.ps{font-size:10px;color:var(--gris);}
+.pc{display:flex;align-items:center;gap:8px;}
+.pb{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--v);background:white;color:var(--vd);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .14s;}
+.pb:hover{background:var(--vd);color:white;border-color:var(--vd);}
+.pnum{font-size:17px;font-weight:800;color:var(--vd);min-width:18px;text-align:center;}
+
+/* STARS */
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.stc{padding:12px 10px;border-radius:13px;border:1.5px solid var(--borde);background:var(--crema);cursor:pointer;user-select:none;text-align:center;transition:all .16s;}
+.stc:hover{border-color:var(--ama);}
+.stc.on{border-color:var(--ama);background:var(--ama-l);}
+.sv{font-size:16px;margin-bottom:4px;}
+.stl{font-size:11px;font-weight:600;color:var(--txt2);}
+.stc.on .stl{color:#8a6000;font-weight:700;}
+
+/* RADIO */
+.rg{display:flex;flex-wrap:wrap;gap:8px;}
+.ro{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:100px;border:1.5px solid var(--borde);background:var(--crema);cursor:pointer;user-select:none;font-size:12.5px;font-weight:600;color:var(--txt2);transition:all .15s;}
+.ro input{display:none;}
+.ro:hover{border-color:var(--v);background:rgba(147,206,191,.08);}
+.ro.on{border-color:var(--vd);background:var(--vd);color:white;}
+
+/* DISNEY BLOCK */
+.dis-blk{display:none;background:linear-gradient(135deg,rgba(26,110,181,.06) 0%,rgba(58,155,213,.04) 100%);border:1.5px solid rgba(58,155,213,.22);border-radius:16px;padding:22px 22px 20px;margin-top:16px;}
+.dis-blk.vis{display:block;}
+.dis-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.dis-hi{font-size:22px;}
+.dis-ht{font-family:'Noto Serif Display',serif;font-size:14px;font-weight:700;color:#1a4d8a;}
+
+/* URGENCY */
+.uc{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.uc-card{padding:14px 10px;border-radius:14px;text-align:center;border:1.5px solid var(--borde);background:var(--crema);cursor:pointer;user-select:none;transition:all .17s;}
+.uc-card:hover{border-color:var(--vm);}
+.uc-card.on{border-color:var(--vd);background:rgba(21,68,63,.05);}
+.uc-card.hot.on{border-color:var(--sal);background:var(--sal-l);}
+.ui{font-size:20px;margin-bottom:5px;display:block;}
+.ul{font-size:11.5px;font-weight:700;color:var(--txt2);line-height:1.25;}
+.us{font-size:10px;color:var(--gris);margin-top:2px;}
+.uc-card.on .ul{color:var(--vd);}
+.uc-card.hot.on .ul{color:#c43c28;}
+
+/* PLAN */
+.pc-r{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pc-c{padding:14px 12px 13px;border-radius:14px;text-align:center;border:1.5px solid var(--borde);background:var(--crema);cursor:pointer;user-select:none;transition:all .17s;}
+.pc-c:hover{border-color:var(--v);}
+.pc-c.on{border-color:var(--vd);background:var(--vd);}
+.pc-c.on .pc-l,.pc-c.on .pc-s{color:rgba(255,255,255,.9);}
+.pc-i{font-size:22px;margin-bottom:6px;display:block;}
+.pc-l{font-size:12px;font-weight:700;color:var(--txt);line-height:1.25;}
+.pc-s{font-size:10px;color:var(--gris);margin-top:3px;}
+
+/* TIPS BOX */
+.tip-box{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:13px;background:var(--ama-l);border:1.5px solid rgba(255,220,136,.5);margin-bottom:18px;}
+.tip-i{font-size:18px;flex-shrink:0;margin-top:1px;}
+.tip-t{font-size:12px;color:#7a5500;line-height:1.65;}
+.tip-t strong{color:#5a3d00;}
+
+/* MICRO LABEL */
+.mlb{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--vm);margin-bottom:10px;display:block;}
+.mlb+*{margin-top:0!important;}
+
+/* FOOTER */
+.ff{padding:28px 34px 32px;background:var(--vd);position:relative;overflow:hidden;}
+.ff::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 70% at 0% 50%,rgba(147,206,191,.15) 0%,transparent 55%),radial-gradient(ellipse 55% 60% at 100% 50%,rgba(255,220,136,.10) 0%,transparent 55%);pointer-events:none;}
+.fi{position:relative;z-index:1;}
+.disc{font-size:11.5px;color:rgba(255,255,255,.52);line-height:1.75;margin-bottom:22px;}
+.disc strong{color:rgba(255,255,255,.78);}
+.sbtn{width:100%;padding:17px 24px;border-radius:15px;border:none;background:linear-gradient(135deg,var(--v) 0%,#7abfb0 100%);color:var(--vd);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:all .2s;position:relative;overflow:hidden;}
+.sbtn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25),transparent);opacity:0;transition:opacity .2s;}
+.sbtn:hover::after{opacity:1;}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(147,206,191,.38);}
+.sbtn:active{transform:none;}
+.bm{display:block;font-family:'DM Sans',sans-serif;font-size:15.5px;font-weight:800;letter-spacing:.3px;}
+.bs{display:block;font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:500;opacity:.72;margin-top:2px;}
+.ag-s{display:flex;align-items:center;gap:14px;margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.10);}
+.ag-av{width:44px;height:44px;border-radius:50%;background:rgba(147,206,191,.18);border:2px solid rgba(147,206,191,.35);font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ag-nm{font-family:'Noto Serif Display',serif;font-size:14.5px;font-weight:700;color:rgba(255,255,255,.88);}
+.ag-rl{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.44);margin-top:1px;}
+.ag-ls{margin-left:auto;display:flex;gap:8px;}
+.agl{padding:6px 13px;border-radius:9px;border:1.5px solid rgba(147,206,191,.28);background:rgba(147,206,191,.09);color:rgba(255,255,255,.75);font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.agl:hover{background:rgba(147,206,191,.2);color:white;border-color:rgba(147,206,191,.55);}
+
+/* SUCCESS */
+.ovl{display:none;position:fixed;inset:0;z-index:1000;background:rgba(21,68,63,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+.ovl.show{display:flex;}
+.sbox{background:white;border-radius:24px;padding:50px 40px;text-align:center;max-width:440px;width:90%;animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;}
+.sic{font-size:54px;margin-bottom:16px;}
+.stit{font-family:'Noto Serif Display',serif;font-size:27px;font-weight:700;color:var(--vd);margin-bottom:10px;}
+.smsg{font-size:14px;color:var(--txt2);line-height:1.75;margin-bottom:26px;}
+.scl{padding:13px 36px;border-radius:13px;border:none;background:var(--vd);color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;}
+.scl:hover{background:var(--vm);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{from{transform:scale(.78);opacity:0}to{transform:scale(1);opacity:1}}
+
+@media(max-width:600px){
+  .sec{padding:22px 18px;}.ff{padding:22px 18px 28px;}
+  .g2,.g3{grid-template-columns:1fr;}.s2{grid-column:span 1;}
+  .sg.c3,.sg.c2{grid-template-columns:1fr 1fr;}
+  .pax-r{grid-template-columns:1fr;}
+  .sr{grid-template-columns:1fr 1fr;}
+  .uc{grid-template-columns:1fr 1fr;}
+  .pc-r{grid-template-columns:1fr 1fr;}
+  .ag-ls{display:none;}
+  .prog-lbs{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="bg-c"></div>
+<div class="bg-d"></div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-m">
+    <svg class="logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="23" fill="#15443f"/>
+      <g stroke="#93cebf" stroke-linecap="round">
+        <line x1="23" y1="5"   x2="23" y2="11.5" stroke-width="2.4"/>
+        <line x1="23" y1="34.5" x2="23" y2="41" stroke-width="2.4"/>
+        <line x1="5"  y1="23"  x2="11.5" y2="23" stroke-width="2.4"/>
+        <line x1="34.5" y1="23" x2="41" y2="23" stroke-width="2.4"/>
+        <line x1="9.6"  y1="9.6"  x2="14.5" y2="14.5" stroke-width="2.2"/>
+        <line x1="31.5" y1="31.5" x2="36.4" y2="36.4" stroke-width="2.2"/>
+        <line x1="36.4" y1="9.6"  x2="31.5" y2="14.5" stroke-width="2.2"/>
+        <line x1="14.5" y1="31.5" x2="9.6"  y2="36.4" stroke-width="2.2"/>
+      </g>
+      <line x1="23" y1="12.5" x2="23" y2="33.5" stroke="#93cebf" stroke-width="2.8" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <span class="lword">viatica</span>
+      <span class="lsub">Agencia de Viajes</span>
+    </div>
+  </div>
+  <p class="eyebrow">✦ Solicitud de presupuesto</p>
+  <h1>El deseo que prende<br><em>la idea de viajar</em></h1>
+  <p class="lead">Planificar un viaje a Disney, Universal, un crucero o Europa tiene muchos detalles. Contanos sobre tu viaje y te ayudamos a diseñarlo paso a paso.</p>
+  <div class="rule"></div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap">
+  <div class="prog-lbs">
+    <span class="pl a" id="pl1">Datos</span>
+    <span class="pl" id="pl2">Destino</span>
+    <span class="pl" id="pl3">Viaje</span>
+    <span class="pl" id="pl4">Presupuesto</span>
+    <span class="pl" id="pl5">Listo</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="pbar"></div></div>
+</div>
+
+<div class="card">
+
+<!-- ▸ 1 · DATOS ─────────────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">1</div><span class="st">Tus datos de contacto</span></div>
+  <div class="g2">
+    <div class="f"><label>Nombre y apellido *</label><input type="text" id="fn" placeholder="Tu nombre completo"></div>
+    <div class="f"><label>WhatsApp *</label><input type="tel" id="ft" placeholder="+54 9 11 xxxx-xxxx"></div>
+    <div class="f"><label>Email *</label><input type="email" id="fe" placeholder="hola@email.com"></div>
+    <div class="f"><label>Ciudad y país</label><input type="text" id="fc" placeholder="Buenos Aires, Argentina"></div>
+    <div class="f"><label>Edad aproximada</label>
+      <select id="fed"><option value="">Seleccioná...</option><option>18–25 años</option><option>26–35 años</option><option>36–45 años</option><option>46–55 años</option><option>55+ años</option></select>
+    </div>
+  </div>
+</div>
+
+<!-- ▸ 2 · CÓMO LLEGASTE ────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb y">2</div><span class="st">¿Cómo llegaste a Viatica?</span></div>
+  <div class="chips" id="ch-canal">
+    <div class="chip az" data-v="instagram">📸 Instagram</div>
+    <div class="chip az" data-v="recomendacion">🤝 Recomendación</div>
+    <div class="chip az" data-v="google">🔍 Google</div>
+    <div class="chip az" data-v="cliente-ant">⭐ Cliente anterior</div>
+    <div class="chip az" data-v="publicidad">📢 Publicidad</div>
+    <div class="chip az" data-v="facebook">👥 Facebook</div>
+    <div class="chip az" data-v="tiktok">🎵 TikTok</div>
+    <div class="chip az" data-v="otro">✨ Otro</div>
+  </div>
+</div>
+
+<!-- ▸ 3 · DESTINO ─────────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">3</div><span class="st">¿A dónde soñás ir?</span></div>
+  <div class="sg c3" id="sd" style="margin-bottom:16px;">
+    <div class="sc" data-v="disney-orlando"><span class="si">🏰</span><span class="sl">Disney Orlando</span></div>
+    <div class="sc" data-v="universal-orlando"><span class="si">🎬</span><span class="sl">Universal Orlando</span></div>
+    <div class="sc" data-v="disney-california"><span class="si">🌴</span><span class="sl">Disney California</span></div>
+    <div class="sc" data-v="disneyland-paris"><span class="si">🗼</span><span class="sl">Disneyland París</span></div>
+    <div class="sc" data-v="crucero"><span class="si">🚢</span><span class="sl">Crucero</span></div>
+    <div class="sc" data-v="caribe"><span class="si">🏖️</span><span class="sl">Caribe</span></div>
+    <div class="sc" data-v="europa"><span class="si">🏛️</span><span class="sl">Europa</span></div>
+    <div class="sc" data-v="usa-canada"><span class="si">🗽</span><span class="sl">EE.UU. / Canadá</span></div>
+    <div class="sc" data-v="combinado"><span class="si">🗺️</span><span class="sl">Combinado</span></div>
+    <div class="sc" data-v="otro-dest"><span class="si">✈️</span><span class="sl">Otro destino</span></div>
+  </div>
+  <div class="f"><label>Destino específico</label><input type="text" id="fde" placeholder="Ej: Cancún, Roma, crucero Mediterráneo, Bahamas..."></div>
+
+  <!-- BLOQUE DISNEY -->
+  <div class="dis-blk" id="db">
+    <div class="dis-head"><span class="dis-hi">🏰</span><span class="dis-ht">Preguntas especiales para Disney / Universal</span></div>
+    <div style="margin-bottom:14px;">
+      <span class="mlb">¿Es tu primera vez en Disney?</span>
+      <div class="rg" id="rg-pv">
+        <label class="ro"><input type="radio" name="pv" value="si"> 🌟 Sí, primera vez</label>
+        <label class="ro"><input type="radio" name="pv" value="no"> 🔁 Ya fui antes</label>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <span class="mlb">¿Qué parques querés visitar?</span>
+      <div class="chips" id="ch-pq">
+        <div class="chip" data-v="mk">🏰 Magic Kingdom</div>
+        <div class="chip" data-v="epcot">🌐 Epcot</div>
+        <div class="chip" data-v="hs">🎬 Hollywood Studios</div>
+        <div class="chip" data-v="ak">🦁 Animal Kingdom</div>
+        <div class="chip" data-v="us">🎥 Universal Studios</div>
+        <div class="chip" data-v="ioa">🏝️ Islands of Adventure</div>
+        <div class="chip" data-v="eu">🌌 Epic Universe</div>
+        <div class="chip" data-v="vb">🌋 Volcano Bay</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <span class="mlb">¿Hotel dentro de Disney?</span>
+        <div class="rg" id="rg-hd">
+          <label class="ro"><input type="radio" name="hd" value="si"> 🏨 Sí</label>
+          <label class="ro"><input type="radio" name="hd" value="no"> 🏩 No</label>
+          <label class="ro"><input type="radio" name="hd" value="cons"> 💬 Me asesoro</label>
+        </div>
+      </div>
+      <div>
+        <span class="mlb">¿Ayuda con itinerario y reservas?</span>
+        <div class="rg" id="rg-it">
+          <label class="ro"><input type="radio" name="it" value="si"> ✅ Sí, lo necesito</label>
+          <label class="ro"><input type="radio" name="it" value="no"> ❌ No hace falta</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ▸ 4 · FECHAS ────────────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">4</div><span class="st">Fechas y duración</span></div>
+  <div class="g3" style="margin-bottom:16px;">
+    <div class="f"><label>Mes y año de salida</label><input type="month" id="fms"></div>
+    <div class="f"><label>Mes y año de regreso</label><input type="month" id="fmr"></div>
+    <div class="f"><label>Flexibilidad</label>
+      <select id="ffl"><option value="">Seleccioná...</option><option>Fechas fijas</option><option>±3 días</option><option>±1 semana</option><option>Soy flexible</option></select>
+    </div>
+  </div>
+  <span class="mlb">¿Cuántos días te gustaría viajar?</span>
+  <div class="chips" id="ch-dias">
+    <div class="chip" data-v="5-7">📅 5–7 días</div>
+    <div class="chip" data-v="8-10">📅 8–10 días</div>
+    <div class="chip" data-v="11-14">📅 11–14 días</div>
+    <div class="chip" data-v="15+">📅 15 días o más</div>
+  </div>
+</div>
+
+<!-- ▸ 5 · VIAJEROS ──────────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">5</div><span class="st">¿Quiénes viajan?</span></div>
+  <div class="pax-r" style="margin-bottom:16px;">
+    <div class="pax-b">
+      <div><div class="pn">Adultos</div><div class="ps">18+ años</div></div>
+      <div class="pc"><button class="pb" onclick="px('a',-1)">−</button><span class="pnum" id="pa">2</span><button class="pb" onclick="px('a',1)">+</button></div>
+    </div>
+    <div class="pax-b">
+      <div><div class="pn">Niños</div><div class="ps">2–17 años</div></div>
+      <div class="pc"><button class="pb" onclick="px('n',-1)">−</button><span class="pnum" id="pn">0</span><button class="pb" onclick="px('n',1)">+</button></div>
+    </div>
+    <div class="pax-b">
+      <div><div class="pn">Bebés</div><div class="ps">0–23 meses</div></div>
+      <div class="pc"><button class="pb" onclick="px('b',-1)">−</button><span class="pnum" id="pb">0</span><button class="pb" onclick="px('b',1)">+</button></div>
+    </div>
+  </div>
+  <div class="f" id="ew" style="display:none;margin-bottom:16px;"><label>Edad(es) de los niños</label><input type="text" id="fen" placeholder="Ej: 5, 8 y 12 años"></div>
+
+  <span class="mlb" style="display:block;margin-bottom:10px;">Tipo de viaje</span>
+  <div class="sg c3" id="st">
+    <div class="sc" data-v="familia"><span class="si">👨‍👩‍👧‍👦</span><span class="sl">Familia</span></div>
+    <div class="sc" data-v="pareja"><span class="si">💑</span><span class="sl">Pareja</span></div>
+    <div class="sc" data-v="amigos"><span class="si">🫂</span><span class="sl">Amigos</span></div>
+    <div class="sc" data-v="luna-miel"><span class="si">💍</span><span class="sl">Luna de miel</span></div>
+    <div class="sc" data-v="cumple"><span class="si">🎂</span><span class="sl">Cumpleaños</span></div>
+    <div class="sc" data-v="quince"><span class="si">👑</span><span class="sl">Quinceañera</span></div>
+    <div class="sc" data-v="aniversario"><span class="si">🥂</span><span class="sl">Aniversario</span></div>
+    <div class="sc" data-v="solo"><span class="si">🧳</span><span class="sl">Solo/a</span></div>
+    <div class="sc" data-v="otro-t"><span class="si">✨</span><span class="sl">Otro</span></div>
+  </div>
+
+  <div style="margin-top:16px;">
+    <span class="mlb">¿Es su primera vez en este destino?</span>
+    <div class="rg" id="rg-pri">
+      <label class="ro"><input type="radio" name="pri" value="si"> 🌟 Sí, primera vez</label>
+      <label class="ro"><input type="radio" name="pri" value="no"> 🔁 Ya estuvimos</label>
+    </div>
+  </div>
+</div>
+
+<!-- ▸ 6 · SERVICIOS Y HOTEL ─────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">6</div><span class="st">Servicios y alojamiento</span></div>
+  <span class="mlb">¿Qué servicios necesitás?</span>
+  <div class="chips" id="ch-srv" style="margin-bottom:20px;">
+    <div class="chip" data-v="paquete">🎒 Paquete completo</div>
+    <div class="chip" data-v="hotel">🏨 Solo hotel</div>
+    <div class="chip" data-v="tickets">🎟️ Tickets / entradas</div>
+    <div class="chip" data-v="crucero">🚢 Crucero</div>
+    <div class="chip" data-v="traslados">🚌 Traslados</div>
+    <div class="chip" data-v="auto">🚗 Alquiler de auto</div>
+    <div class="chip" data-v="excursiones">🗺️ Excursiones</div>
+  </div>
+  <span class="mlb">Categoría de hotel</span>
+  <div class="sr" id="sh">
+    <div class="stc" data-v="3e"><div class="sv">⭐⭐⭐</div><div class="stl">3 estrellas</div></div>
+    <div class="stc" data-v="4e"><div class="sv">⭐⭐⭐⭐</div><div class="stl">4 estrellas</div></div>
+    <div class="stc" data-v="5e"><div class="sv">⭐⭐⭐⭐⭐</div><div class="stl">5 estrellas</div></div>
+    <div class="stc" data-v="ti"><div class="sv">🌴</div><div class="stl">Todo incluido</div></div>
+    <div class="stc" data-v="hd"><div class="sv">🏰</div><div class="stl">Hotel Disney</div></div>
+    <div class="stc" data-v="hu"><div class="sv">🎬</div><div class="stl">Hotel Universal</div></div>
+  </div>
+  <div style="margin-top:20px;">
+    <span class="mlb">Experiencias que te interesan</span>
+    <div class="chips" id="ch-exp">
+      <div class="chip" data-v="p-disney">🏰 Parques Disney</div>
+      <div class="chip" data-v="p-univ">🎬 Parques Universal</div>
+      <div class="chip" data-v="playas">🏖️ Playas</div>
+      <div class="chip" data-v="cruceros">🚢 Cruceros</div>
+      <div class="chip" data-v="compras">🛍️ Compras</div>
+      <div class="chip" data-v="gastro">🍽️ Gastronomía</div>
+      <div class="chip" data-v="natur">🌿 Naturaleza</div>
+      <div class="chip" data-v="excurs">🗺️ Excursiones guiadas</div>
+      <div class="chip" data-v="cultura">🏛️ Cultura e historia</div>
+      <div class="chip" data-v="spa">💆 Relax / Spa</div>
+    </div>
+  </div>
+</div>
+
+<!-- ▸ 7 · PRESUPUESTO Y PAGO ─────── -->
+<div class="sec">
+  <div class="sh"><div class="sb y">7</div><span class="st">Presupuesto y forma de pago</span></div>
+  <div class="tip-box">
+    <span class="tip-i">💡</span>
+    <p class="tip-t"><strong>Esto nos ayuda a prepararte la propuesta más acorde.</strong> No es un compromiso, es solo una referencia para orientar las opciones hacia lo mejor para vos.</p>
+  </div>
+  <span class="mlb">Presupuesto estimado por persona</span>
+  <div class="chips" id="ch-bud" style="margin-bottom:20px;">
+    <div class="chip y" data-v="m1500">💰 Menos de USD 1.500</div>
+    <div class="chip y" data-v="1500-3k">💰 USD 1.500–3.000</div>
+    <div class="chip y" data-v="3k-5k">💰 USD 3.000–5.000</div>
+    <div class="chip y" data-v="5k-8k">💰 USD 5.000–8.000</div>
+    <div class="chip y" data-v="8k+">💰 Más de USD 8.000</div>
+    <div class="chip y" data-v="abierto">🤝 Lo hablo con la agente</div>
+  </div>
+  <div class="g2">
+    <div>
+      <span class="mlb">Forma de pago preferida</span>
+      <div class="chips" id="ch-pago">
+        <div class="chip" data-v="credito">💳 Crédito</div>
+        <div class="chip" data-v="debito">💳 Débito</div>
+        <div class="chip" data-v="transf">🏦 Transferencia</div>
+        <div class="chip" data-v="mix">🔀 Combinado</div>
+      </div>
+    </div>
+    <div>
+      <span class="mlb">¿Te interesan cuotas?</span>
+      <div class="rg" id="rg-cuo">
+        <label class="ro"><input type="radio" name="cuo" value="si"> ✅ Sí</label>
+        <label class="ro"><input type="radio" name="cuo" value="no"> ❌ No</label>
+        <label class="ro"><input type="radio" name="cuo" value="dep"> 🤔 Depende</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ▸ 8 · ETAPA DE PLANIFICACIÓN ─── -->
+<div class="sec">
+  <div class="sh"><div class="sb">8</div><span class="st">¿En qué etapa estás?</span></div>
+  <span class="mlb">Nivel de planificación</span>
+  <div class="pc-r" id="pc-cards" style="margin-bottom:20px;">
+    <div class="pc-c" data-v="invest"><span class="pc-i">🔍</span><div class="pc-l">Estoy investigando</div><div class="pc-s">Quiero ideas y precios</div></div>
+    <div class="pc-c" data-v="cotizar"><span class="pc-i">📋</span><div class="pc-l">Quiero cotizar</div><div class="pc-s">Necesito una propuesta</div></div>
+    <div class="pc-c" data-v="reservar"><span class="pc-i">✅</span><div class="pc-l">Quiero reservar</div><div class="pc-s">Listo para confirmar</div></div>
+  </div>
+  <span class="mlb">¿Cuándo te gustaría viajar?</span>
+  <div class="uc" id="uc-cards">
+    <div class="uc-card hot" data-v="m3"><span class="ui">🔥</span><div class="ul">Menos de 3 meses</div><div class="us">Urgente</div></div>
+    <div class="uc-card" data-v="3-6"><span class="ui">⏳</span><div class="ul">3 a 6 meses</div><div class="us">Próximo</div></div>
+    <div class="uc-card" data-v="6-12"><span class="ui">📅</span><div class="ul">6 a 12 meses</div><div class="us">Planificando</div></div>
+    <div class="uc-card" data-v="1a+"><span class="ui">🌱</span><div class="ul">Más de 1 año</div><div class="us">Con tiempo</div></div>
+  </div>
+</div>
+
+<!-- ▸ 9 · COMENTARIOS ──────────── -->
+<div class="sec">
+  <div class="sh"><div class="sb">9</div><span class="st">Tu viaje ideal</span></div>
+  <div class="f" style="margin-bottom:16px;">
+    <label>Contanos cómo sería tu viaje soñado</label>
+    <textarea id="fcom" placeholder="Ej: festejamos nuestro 10° aniversario, es la primera vez de los chicos en Disney, queremos hotel con pileta, tenemos un niño celíaco, nos gustan los restaurantes de autor..."></textarea>
+  </div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="f"><label>¿Cómo preferís que te contactemos?</label>
+      <select id="fmc"><option value="">Seleccioná...</option><option>WhatsApp</option><option>Email</option><option>Llamada</option><option>Cualquiera está bien</option></select>
+    </div>
+    <div class="f"><label>¿Cuándo podemos contactarte?</label>
+      <select id="fhor"><option value="">Seleccioná...</option><option>Mañana (9–13h)</option><option>Mediodía (12–15h)</option><option>Tarde (15–19h)</option><option>Noche (19–21h)</option><option>Cualquier momento</option></select>
+    </div>
+  </div>
+  <div style="padding:14px 16px;border-radius:13px;background:rgba(147,206,191,.10);border:1.5px solid rgba(147,206,191,.28);">
+    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <input type="checkbox" id="ftips" style="width:16px;height:16px;accent-color:var(--vd);cursor:pointer;flex-shrink:0;">
+      <span style="font-size:13px;font-weight:500;color:var(--txt2);">🗺️ Me gustaría recibir <strong>tips y consejos</strong> para planificar mi viaje</span>
+    </label>
+  </div>
+</div>
+
+<!-- ▸ FOOTER ──────────────────── -->
+<div class="ff">
+  <div class="fi">
+    <p class="disc">Nuestro equipo revisará tu solicitud y te enviaremos una <strong>propuesta personalizada en 24 a 48 hs.</strong> Tu información es confidencial y no se comparte con terceros.</p>
+    <button class="sbtn" onclick="doSubmit()">
+      <span style="font-size:22px;">✈️</span>
+      <span>
+        <span class="bm">¡Quiero mi propuesta personalizada!</span>
+        <span class="bs">María José te responde en menos de 24hs</span>
+      </span>
+    </button>
+    <div class="ag-s">
+      <div class="ag-av">👩</div>
+      <div><div class="ag-nm">María José Blasco</div><div class="ag-rl">Agente de Viajes · Viatica</div></div>
+      <div class="ag-ls">
+        <a href="https://wa.me/5491130360012" class="agl" target="_blank">📱 WhatsApp</a>
+        <a href="mailto:hola@viaticaviajes.com" class="agl" target="_blank">✉️ Email</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /card -->
+</div><!-- /wrap -->
+
+<!-- SUCCESS -->
+<div class="ovl" id="ovl">
+  <div class="sbox">
+    <div class="sic">🎉</div>
+    <div class="stit">¡Consulta enviada!</div>
+    <p class="smsg">María José ya recibió tu solicitud y te va a contactar en menos de 24 horas con una propuesta hecha a medida.<br><br><strong>¡Gracias por confiar en Viatica!</strong> 🌟</p>
+    <button class="scl" onclick="document.getElementById('ovl').classList.remove('show')">Perfecto, ¡gracias!</button>
+  </div>
+</div>
+
+<script>
+// PAX
+const pv={a:2,n:0,b:0};
+function px(k,d){
+  pv[k]=Math.max(k==='a'?1:0,pv[k]+d);
+  document.getElementById('p'+k).textContent=pv[k];
+  document.getElementById('ew').style.display=pv.n>0?'flex':'none';
+  upProg();
+}
+
+// Chips multi
+function cM(id){document.getElementById(id)?.querySelectorAll('[data-v]').forEach(c=>{c.addEventListener('click',()=>{c.classList.toggle('on');upProg();});});}
+// Chips single
+function cS(id){const w=document.getElementById(id);if(!w)return;w.querySelectorAll('[data-v]').forEach(c=>{c.addEventListener('click',()=>{w.querySelectorAll('[data-v]').forEach(x=>x.classList.remove('on'));c.classList.add('on');upProg();});});}
+// Sel multi
+function sM(id){document.getElementById(id)?.querySelectorAll('[data-v]').forEach(c=>{c.addEventListener('click',()=>{c.classList.toggle('on');upProg();});});}
+// Sel single
+function sS(id){const w=document.getElementById(id);if(!w)return;w.querySelectorAll('[data-v]').forEach(c=>{c.addEventListener('click',()=>{w.querySelectorAll('[data-v]').forEach(x=>x.classList.remove('on'));c.classList.add('on');upProg();});});}
+// Plan single
+function pcS(id){const w=document.getElementById(id);if(!w)return;w.querySelectorAll('[data-v]').forEach(c=>{c.addEventListener('click',()=>{w.querySelectorAll('[data-v]').forEach(x=>x.classList.remove('on'));c.classList.add('on');upProg();});});}
+// Radios
+function initR(){document.querySelectorAll('.ro').forEach(l=>{l.addEventListener('click',()=>{const n=l.querySelector('input').name;document.querySelectorAll(`.ro input[name="${n}"]`).forEach(r=>r.closest('.ro').classList.remove('on'));l.classList.add('on');upProg();});});}
+
+// Disney block
+function checkD(){
+  const vals=Array.from(document.getElementById('sd').querySelectorAll('.on')).map(c=>c.dataset.v);
+  const show=vals.some(v=>['disney-orlando','universal-orlando','disney-california','disneyland-paris'].includes(v));
+  document.getElementById('db').classList.toggle('vis',show);
+}
+document.getElementById('sd').querySelectorAll('[data-v]').forEach(c=>c.addEventListener('click',checkD));
+
+// Progress
+function upProg(){
+  const n=document.getElementById('fn').value.trim();
+  const e=document.getElementById('fe').value.trim();
+  const t=document.getElementById('ft').value.trim();
+  let s=0;
+  if(n)s+=20;
+  if(e||t)s+=10;
+  if(document.querySelector('#sd .on'))s+=20;
+  if(document.getElementById('fms').value)s+=15;
+  if(document.querySelector('#pc-cards .on')||document.querySelector('#uc-cards .on'))s+=15;
+  if(document.querySelector('#ch-bud .on'))s+=10;
+  if(document.querySelector('#ch-srv .on'))s+=10;
+  s=Math.min(s,100);
+  document.getElementById('pbar').style.width=s+'%';
+  ['pl1','pl2','pl3','pl4','pl5'].forEach((id,i)=>{document.getElementById(id).classList.toggle('a',s>=(i+1)*20);});
+}
+
+// Submit
+function doSubmit(){
+  const n=document.getElementById('fn').value.trim();
+  const e=document.getElementById('fe').value.trim();
+  const t=document.getElementById('ft').value.trim();
+  if(!n){alert('Por favor ingresá tu nombre.');return;}
+  if(!e&&!t){alert('Por favor ingresá al menos email o WhatsApp.');return;}
+  document.getElementById('ovl').classList.add('show');
+}
+
+// Init
+['fn','fe','ft','fms'].forEach(id=>document.getElementById(id)?.addEventListener('input',upProg));
+cM('ch-canal');sM('sd');cM('ch-pq');cS('ch-dias');sS('st');
+cM('ch-srv');cM('ch-exp');cM('ch-bud');cM('ch-pago');
+pcS('pc-cards');pcS('uc-cards');initR();
+// star hotel single
+const sh=document.getElementById('sh');
+sh.querySelectorAll('[data-v]').forEach(c=>c.addEventListener('click',()=>{sh.querySelectorAll('[data-v]').forEach(x=>x.classList.remove('on'));c.classList.add('on');upProg();}));
+</script>
+</body>
+</html>
